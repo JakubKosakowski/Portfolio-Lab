@@ -31,6 +31,22 @@ class RegisterView(View):
     def get(self, request):
         return render(request, 'register.html')
 
+    def post(self, request):
+        messages = []
+        if any(c.isdigit() for c in request.POST.get("name")):
+            messages.append("Imię nie powinno zawierać liczb!")
+        if any(c.isdigit() for c in request.POST.get("surname")):
+            messages.append("Nazwisko nie powinno zawierać liczb!")
+        if request.POST.get("password") != request.POST.get("password2"):
+            messages.append("Hasła nie są takie same!")
+        if User.objects.get(email=request.POST.get("email")):
+            messages.append("Konto z takim adresem mailowym już istnieje!")
+        if len(messages) > 0:
+            return render(request, 'register.html', {"messages": messages})
+        else:
+            User.objects.create_user(username=request.POST.get("email"), email=request.POST.get("email"), password=request.POST.get("password"))
+            return redirect('login')
+
 
 class AddDonationView(View):
     def get(self, request):

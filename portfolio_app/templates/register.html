@@ -4,9 +4,17 @@
     <title>Register Page</title>
 {% endblock %}
 {% block content %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <section class="login-page">
       <h2>Załóż konto</h2>
-      <form>
+      <form action="" method="POST">
+          {% csrf_token %}
         <div class="form-group">
           <input type="text" name="name" placeholder="Imię" />
         </div>
