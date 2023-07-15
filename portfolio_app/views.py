@@ -73,4 +73,7 @@ class LogoutView(View):
 
 class AddDonationView(View):
     def get(self, request):
-        return render(request, 'form.html')
+        if request.user.is_authenticated:
+            return render(request, 'form.html', {'categories': Category.objects.all()})
+        return redirect('login')
+
