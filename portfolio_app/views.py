@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import request, HttpResponse
+from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .models import *
 
@@ -26,6 +27,18 @@ class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
 
+    def post(self, request):
+        try:
+            user = User.objects.get(username=request.POST.get("email"))
+            user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
+            if user is not None:
+                login(request, user)
+                return redirect('landing_page')
+            else:
+                return render(request, 'login.html', {"messages": ["Zły login lub hasło"]})
+        except User.DoesNotExist:
+            return redirect('register')
+
 
 class RegisterView(View):
     def get(self, request):
@@ -44,8 +57,18 @@ class RegisterView(View):
         if len(messages) > 0:
             return render(request, 'register.html', {"messages": messages})
         else:
-            User.objects.create_user(username=request.POST.get("email"), email=request.POST.get("email"), password=request.POST.get("password"))
+            User.objects.create_user(username=request.POST.get("email"),
+                                     email=request.POST.get("email"),
+                                     password=request.POST.get("password"),
+                                     first_name=request.POST.get('name'),
+                                     last_name=request.POST.get('surname'))
             return redirect('login')
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('landing_page')
 
 
 class AddDonationView(View):
