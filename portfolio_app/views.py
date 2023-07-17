@@ -78,3 +78,18 @@ class AddDonationView(View):
                                                  'institutions': Institution.objects.all()})
         return redirect('login')
 
+    def post(self, request):
+        donated_categories = request.POST.getlist("categories")
+        donated_institution = Institution.objects.get(id=request.POST.get("organization"))
+        donation = Donation.objects.create(quantity=request.POST.get("bags"),
+                                           address=request.POST.get("address"),
+                                           phone_number=request.POST.get("phone"),
+                                           city=request.POST.get("city"),
+                                           zip_code=request.POST.get("postcode"),
+                                           pick_up_date=request.POST.get("data"),
+                                           pick_up_time=request.POST.get("time"),
+                                           pick_up_comment=request.POST.get("more_info"))
+        donation.categories.add(donated_categories)
+        donation.institution.add(donated_institution)
+        donation.save()
+        return render(request, "form-confirmation.html")
