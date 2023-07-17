@@ -97,4 +97,5 @@ class AddDonationView(View):
 
 class UserProfileView(View):
     def get(self, request):
-        return render(request, 'profile.html')
+        donations = Donation.objects.filter(user=request.user)
+        return render(request, 'profile.html', {'donations': donations})

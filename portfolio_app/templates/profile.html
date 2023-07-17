@@ -7,4 +7,21 @@
     <p>Imię: {{ user.first_name }}</p>
     <p>Nazwisko: {{ user.last_name }}</p>
     <p>Email: {{ user.email }}</p>
+
+    <table style="border: none;">
+        <tr>
+            <th>Wsparte przedsięwzięcia</th>
+            <th>Ilość worków w donacji</th>
+            <th>Kategorie przedsięwzięcia</th>
+            <th>Data odbioru</th>
+        </tr>
+        {% for donation in donations %}
+        <tr>
+            <td>{{ donation.institution.name }}</td>
+            <td>{{ donation.quantity }}</td>
+            <td>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</td>
+            <td>{{ donation.pick_up_date }} {{ donation.pick_up_time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
