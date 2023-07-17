@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>User Profile</title>
+{% endblock %}
+{% block content %}
+    <p>Imię: {{ user.first_name }}</p>
+    <p>Nazwisko: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+{% endblock %}

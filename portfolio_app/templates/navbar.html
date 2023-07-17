@@ -3,7 +3,7 @@
         <ol>
             <li>Witaj {{ user.first_name }}
                 <ul>
-                    <li><a href="#">Profil</a></li>
+                    <li><a href="{% url 'profile' %}">Profil</a></li>
                     <li><a href="#">Ustawienia</a></li>
                     {% if user.is_superuser == 1 %}
                     <li><a href="/admin">Panel administracyjny</a></li>
