@@ -253,3 +253,29 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 });
+
+document.querySelector(".choose-categories > .btn").onclick = function(){
+  let data = [];
+  let markedCheckbox = document.getElementsByName('categories');
+  let categories = document.getElementsByName('organization_categories');
+  for (let checkbox of markedCheckbox){
+    if (checkbox.checked){
+      data.push(checkbox.nextElementSibling.nextElementSibling.nextElementSibling.value);
+    }
+  }
+  for(let i=0; i < categories.length; i++){
+    let temp = false;
+    for (let j = 0; j < data.length; j++){
+      if (categories[i].value.split(";").includes(data[j])){
+        temp = true;
+        break;
+      }
+    }
+    if (temp){
+      categories[i].parentElement.parentElement.style.display = "";
+    }
+    else{
+      categories[i].parentElement.parentElement.style.display = "None";
+    }
+  }
+}
