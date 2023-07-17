@@ -109,7 +109,6 @@ header--form-page
             <div class="form-group form-group--checkbox institution">
               <label>
                 <input type="radio" name="organization" value="{{ institution.id }}" />
-                <input type="hidden" name="organization_categories" value="{% for category in institution.categories.all %}{{ category.name }};{% endfor %}"/>
                 <span class="checkbox radio"></span>
                 <span class="description">
                   <div class="title">{{ institution.name }}</div>
@@ -118,6 +117,7 @@ header--form-page
                   </div>
                 </span>
               </label>
+              <input type="hidden" name="organization_categories" value="{% for category in institution.categories.all %}{{ category.name }};{% endfor %}"/>
             </div>
             {% endfor %}
 

@@ -272,10 +272,10 @@ document.querySelector(".choose-categories > .btn").onclick = function(){
       }
     }
     if (temp){
-      categories[i].parentElement.parentElement.style.display = "";
+      categories[i].parentElement.style.display = "";
     }
     else{
-      categories[i].parentElement.parentElement.style.display = "None";
+      categories[i].parentElement.style.display = "None";
     }
   }
 }
