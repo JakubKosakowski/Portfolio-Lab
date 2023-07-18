@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>Edit profile</title>
+{% endblock %}
+{% block content %}
+{% if message %}
+    <p style="color: red;">{{ message }}</p>
+{% endif %}
+<h1>Zmiana danych użytkownika</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="edit_data"/>
+    <div class="form-group">
+        <label for="first_name">Imię: </label>
+        <input type="text" name="first_name" value="{{ user.first_name }}"/>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Nazwisko: </label>
+        <input type="text" name="last_name" value="{{ user.last_name }}"/>
+    </div>
+    <div class="form-group">
+        <label for="email">Adres email: </label>
+        <input type="email" name="email" value="{{ user.email }}"/>
+    </div>
+    <div class="form-group">
+        <label for="password">Hasło: </label>
+        <input type="password" name="password"/>
+    </div>
+    <div class="form-group form-group--buttons">
+        <button class="btn" type="submit">Edytuj</button>
+    </div>
+</form>
+<h1>Zmiana hasła</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="edit_password"/>
+    <div class="form-group">
+        <label for="old_password">Stare hasło: </label>
+        <input type="password" name="old_password"/>
+    </div>
+    <div class="form-group">
+        <label for="new_password">Nowe hasło: </label>
+        <input type="password" name="new_password"/>
+    </div>
+    <div class="form-group">
+        <label for="repeat_new_password">Powtórz nowe hasło: </label>
+        <input type="password" name="repeat_new_password"/>
+    </div>
+    <div class="form-group form-group--buttons">
+        <button class="btn" type="submit">Zmień hasło</button>
+    </div>
+</form>
+{% endblock %}

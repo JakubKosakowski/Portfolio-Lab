@@ -106,3 +106,38 @@ class UserProfileView(View):
         donation.is_taken = not donation.is_taken
         donation.save()
         return redirect('profile')
+
+
+class EditProfileView(View):
+    def get(self,request):
+        return render(request, 'edit.html')
+
+    def post(self, request):
+        if request.POST.get("type") == "edit_data":
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            email_address = request.POST.get('email')
+            password = request.POST.get('password')
+            user = authenticate(username=request.user.username, password=password)
+            if user is not None:
+                request.user.first_name = first_name
+                request.user.last_name = last_name
+                request.user.email = email_address
+                request.user.save()
+                return redirect('profile')
+            else:
+                return render(request, 'edit.html', {"message": "Podane hasło jest nieprawidłowe!"})
+        else:
+            old_password = request.POST.get('old_password')
+            new_password = request.POST.get('new_password')
+            repeat_new_password = request.POST.get('repeat_new_password')
+            user = authenticate(username=request.user.username, password=old_password)
+            if user is not None:
+                if new_password != repeat_new_password:
+                    return render(request, 'edit.html', {"message": "Nowe hasła nie są takie same!"})
+                request.user.set_password(new_password)
+                request.user.save()
+                return redirect('landing_page')
+            else:
+                return render(request, 'edit.html', {"message": "Stare hasło jest nieprawidłowe!"})
+
