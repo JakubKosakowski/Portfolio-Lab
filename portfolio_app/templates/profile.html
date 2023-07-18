@@ -16,12 +16,31 @@
             <th>Data odbioru</th>
         </tr>
         {% for donation in donations %}
+        {% if donation.is_taken %}
+        <tr style="color: #858585;">
+            <td>{{ donation.institution.name }}</td>
+            <td>{{ donation.quantity }}</td>
+            <td>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</td>
+            <td>{{ donation.pick_up_date }} {{ donation.pick_up_time }}</td>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="donation" value="{{ donation.id }}"/>
+                <td><button type="submit" value="0">Nie zabrany</button></td>
+            </form>
+        </tr>
+        {% else %}
         <tr>
             <td>{{ donation.institution.name }}</td>
             <td>{{ donation.quantity }}</td>
             <td>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</td>
             <td>{{ donation.pick_up_date }} {{ donation.pick_up_time }}</td>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="donation" value="{{ donation.id }}"/>
+                <td><button type="submit" value="0">Zabrane</button></td>
+            </form>
         </tr>
+        {% endif %}
         {% endfor %}
     </table>
 {% endblock %}

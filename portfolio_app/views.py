@@ -98,5 +98,11 @@ class AddDonationView(View):
 
 class UserProfileView(View):
     def get(self, request):
-        donations = Donation.objects.filter(user=request.user)
+        donations = Donation.objects.filter(user=request.user).order_by('is_taken')
         return render(request, 'profile.html', {'donations': donations})
+
+    def post(self, request):
+        donation = Donation.objects.get(id=request.POST.get("donation"))
+        donation.is_taken = not donation.is_taken
+        donation.save()
+        return redirect('profile')
