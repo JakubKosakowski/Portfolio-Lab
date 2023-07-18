@@ -1,8 +1,23 @@
 <nav class="container container--70">
+        {% if user.is_authenticated %}
+        <ol>
+            <li>Witaj {{ user.first_name }}
+                <ul>
+                    <li><a href="{% url 'profile' %}">Profil</a></li>
+                    <li><a href="{% url 'edit' %}">Ustawienia</a></li>
+                    {% if user.is_superuser == 1 %}
+                    <li><a href="/admin">Panel administracyjny</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+                </ul>
+            </li>
+        </ol>
+        {% else %}
         <ul class="nav--actions">
           <li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
           <li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
         </ul>
+        {% endif %}
         <ul>
           <li><a href="{% url 'landing_page' %}" class="btn btn--without-border active">Start</a></li>
           <li><a href="{% url 'landing_page' %}#steps" class="btn btn--without-border">O co chodzi?</a></li>

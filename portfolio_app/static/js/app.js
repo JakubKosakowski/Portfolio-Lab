@@ -243,7 +243,9 @@ document.addEventListener("DOMContentLoaded", function() {
      * TODO: validation, send data to server
      */
     submit(e) {
-      e.preventDefault();
+      if(this.currentStep < 5) {
+        e.preventDefault();
+      }
       this.currentStep++;
       this.updateForm();
     }
@@ -253,3 +255,58 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 });
+
+let data = [];
+document.querySelector(".choose-categories > .btn").onclick = function(){
+  data = [];
+  let markedCheckbox = document.getElementsByName('categories');
+  let categories = document.getElementsByName('organization_categories');
+  for (let checkbox of markedCheckbox){
+    if (checkbox.checked){
+      data.push(checkbox.nextElementSibling.nextElementSibling.nextElementSibling.value);
+    }
+  }
+  console.log(data)
+  for(let i=0; i < categories.length; i++){
+    let temp = false;
+    for (let j = 0; j < data.length; j++){
+      if (categories[i].value.split(";").includes(data[j])){
+        temp = true;
+        break;
+      }
+    }
+    if (temp){
+      categories[i].parentElement.style.display = "";
+    }
+    else{
+      categories[i].parentElement.style.display = "None";
+    }
+  }
+}
+
+document.querySelector('.submit-form > .next-step').onclick = function(){
+  let amountOfSacks = document.getElementById("bags").value;
+  let institution = document.querySelector('input[name="organization"]:checked').nextElementSibling.nextElementSibling.children[0].innerText;
+  const address = document.querySelector("#address");
+  const dateOfCollection = document.querySelector("#date-of-collection");
+  const sacks = document.querySelector("span.sacks");
+  const inst = document.querySelector("span.institution");
+  inst.innerText = `Dla organizacji "${institution}"`;
+  sacks.innerText = `Worki w ilości ${amountOfSacks}, zawierające `;
+  for (let i=0; i < data.length - 1; i++){
+    sacks.innerText += `${data[i]}, `;
+  }
+  sacks.innerText += `${data[data.length - 1]}`;
+  address.innerHTML = `<li>${document.querySelector('input[name="address"]').value}</li>
+                       <li>${document.querySelector('input[name="city"]').value}</li>
+                       <li>${document.querySelector('input[name="postcode"]').value}</li>
+                       <li>${document.querySelector('input[name="phone"]').value}</li>`
+  dateOfCollection.innerHTML = `<li>${document.querySelector('input[name="data"]').value}</li>
+                                <li>${document.querySelector('input[name="time"]').value}</li>`
+  if (document.querySelector('textarea[name="more_info"]').value === ""){
+    dateOfCollection.innerHTML += `<li>Brak uwag</li>`
+  }
+  else{
+    dateOfCollection.innerHTML += `<li>${document.querySelector('input[name="more_info"]').value}</li>`
+  }
+}
